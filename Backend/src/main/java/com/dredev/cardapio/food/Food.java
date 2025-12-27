@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Table(name="food")
+@Table(name="foods") 
 @Entity(name="foods")
 @Getter
 @NoArgsConstructor
@@ -28,11 +28,7 @@ public class Food {
     public Food(FoodRequestDTO data) {
         this.title = data.title();
         this.imageUrl = data.imageUrl();
-        this.price = data.price();
+        this.price = data.price();  
     }
-
-
-
-
 
 }
