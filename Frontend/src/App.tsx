@@ -3,11 +3,13 @@ import { Card } from './components/Card/Card'
 import { CreateModal } from './components/CreateModal/CreateModal';
 import { useFoodData } from './hooks/useFoodData';
 import { useState } from 'react';
+import type {FoodData}  from './interface/FoodData';
 
 
 function App() {
   const {data} = useFoodData();
-
+  const [itemToDelete,setItemToDelete] = useState<FoodData|null>(null);
+  const [itemToEdit,setItemToEdit] = useState<FoodData|null>(null);
   const [isModalOpen,setIsModalOpen] = useState(false);
   const handleOpenModal = () =>{
     setIsModalOpen(prev => !prev);
