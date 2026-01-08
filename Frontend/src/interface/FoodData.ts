@@ -1,8 +1,8 @@
 export interface FoodData {
-  id?: number,
+  id: number,
   title: string,
   restaurant:string,
-  type:'delivery'| 'local',
+  type:string,
   rating:number,
   imageUrl: string,
   price: number
