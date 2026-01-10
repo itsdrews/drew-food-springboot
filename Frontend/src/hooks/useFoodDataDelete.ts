@@ -1,22 +1,18 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { FoodData } from "../interface/FoodData";
 
-type CreateFoodData = Omit<FoodData, "id">;
-
-export const postData = async (data: CreateFoodData) => {
-  const response = await axios.post(
-    "http://localhost:8080/food",
-    data
+export const deleteFood = async (id: number) => {
+  const response = await axios.delete(
+    `http://localhost:8080/food/${id}`
   );
   return response.data;
 };
 
-export function useFoodDataMutate() {
+export function useFoodDataDelete() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: postData,
+    mutationFn: deleteFood,
     retry: 2,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["food-data"] });

@@ -2,10 +2,12 @@ import {AnimatePresence, motion} from 'framer-motion'
 import {Star,Pencil,Trash2} from 'lucide-react'
 import type { FoodData } from '../../interface/FoodData'
 interface CardProps{
-  item:FoodData
+  item:FoodData;
+  onEdit: (food:FoodData)=>void;
+  onDelete: (food:FoodData)=>void;
 }
  // TO DO : Adaptar o  CARD
-export function Card({item}:CardProps){
+export function Card({item,onDelete,onEdit}:CardProps){
 
   return(
     <motion.div 
@@ -63,11 +65,13 @@ export function Card({item}:CardProps){
         <div className="flex items-center justify-end mt-3">
           <button
             className="text-blue-500 hover:text-blue-700 mr-2 cursor-pointer"
+            onClick={()=>onEdit(item)}
             >
             <Pencil className="w-4 h-4" />
           </button>
           <button
             className="text-red-500 hover:text-red-700 cursor-pointer"
+             onClick={()=>onDelete(item)}
             >
             <Trash2 className="w-4 h-4" />
           </button>
