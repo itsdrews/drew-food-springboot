@@ -1,3 +1,3 @@
 package com.dredev.cardapio.food;
 
-public record FoodRequestDTO(String title, String imageUrl, Integer price){}
+public record FoodRequestDTO(String title, String restaurant,String imageUrl, String type, Float price, Integer rating){}
