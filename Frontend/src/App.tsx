@@ -7,12 +7,17 @@ import { ToastContainer } from './components/Toast/ToastContainer';
 import { ConfirmDeleteToast } from './components/Toast/ConfirmDeleteToast';
 import { SuccessToast } from './components/Toast/SuccessToast';
 import { useFoodDataDelete } from './hooks/useFoodDataDelete';
+import { useFoodData } from './hooks/useFoodData';
 
 
 
 function App() {
+
+
   //const {data} = useFoodData(); 
   // Mock para ajustes visuais
+ 
+  /*
   let data:FoodData [] = [
   {
     id: 1,
@@ -68,7 +73,7 @@ function App() {
     price: 22.00,
     imageUrl: 'https://images.unsplash.com/photo-1679942262057-d5732f732841?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNzZXJ0JTIwY2FrZXxlbnwxfHx8fDE3Njc3MjQxODZ8MA&ixlib=rb-4.1.0&q=80&w=1080'
   }
-];
+];*/
   const [itemToDelete,setItemToDelete] = useState<FoodData|null>(null);
   const [itemToEdit,setItemToEdit] = useState<FoodData|null>(null);
   const [isModalOpen,setIsModalOpen] = useState(false);
@@ -78,7 +83,7 @@ function App() {
     setIsModalOpen(prev => !prev);
   };
   const { mutate: deleteFood } = useFoodDataDelete();
-
+  let {data,isLoading,isError} = useFoodData();
   function handleDelete(food: FoodData) {
   setToast(
     <ConfirmDeleteToast
@@ -99,41 +104,62 @@ function App() {
   }
   return (
     
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 mx-6">
-      
-      {/* Header */}
-      <div className="flex flex-col items-center mb-8 gap-4">
-      <h1 className="text-4xl font-handwritten font-bold text-gray-800 text-center">
-    Cardápio de Recomendações do Drew
+     
+<div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 mx-6 flex">
+
+  {/* LADO ESQUERDO — DESCRIÇÃO */}
+  <div className="w-1/2 flex flex-col justify-center pr-8 bg-center bg-cover"
+  style={{
+    backgroundImage:"url('/public/background.png')"
+  }}>
+    <h1 className="text-4xl font-handwritten font-bold text-black-800 mx-auto my-">
+      Cardápio de Recomendações do Drew
     </h1>
-    
+
+    <p className="text-black-600 text-lg mx-auto">
+   Recomendações gastronômicas selecionadas de forma simples e intuitiva.
+    </p>
+
     <button
-    onClick={handleOpenModal}
-    className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition cursor-pointer"
+      onClick={handleOpenModal}
+      className="bg-blue-600 text-white px-5 py-3 rounded-md text-sm font-medium hover:bg-blue-700 transition w-fit cursor-pointer mx-auto"
     >
-    + Novo
+      + Novo
     </button>
+  </div>
+
+  {/* LADO DIREITO — CARDS COM SCROLL */}
+  <div className="w-1/2 h-screen overflow-y-auto pl-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-10">
+      {data && data.length === 0 && (
+  <p className="text-center text-gray-500 mt-6">
+    🍽️ Cardápio vazio no momento
+  </p>
+)}
+      {data?.map(foodData => (
+        <Card
+          key={foodData.id}
+          item={foodData}
+          onEdit={setItemToEdit}
+          onDelete={handleDelete}
+        />
+      ))}
     </div>
-    
-
-  {/* Grid */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
-  {data.map(foodData => (
-    <Card key={foodData.id} item={foodData} onEdit={setItemToEdit} onDelete ={handleDelete} />
-  ))}
   </div>
-  {isModalOpen && <CreateModal closeModal={()=>setIsModalOpen(false)}/>}
+
+  {/* MODAIS */}
+  {isModalOpen && <CreateModal closeModal={() => setIsModalOpen(false)} />}
+
   {itemToEdit && (
-      <EditModal
-        food={itemToEdit}
-        closeModal={() => setItemToEdit(null)}
-      />
-        )}
-      <ToastContainer>{toast}</ToastContainer>
+    <EditModal
+      food={itemToEdit}
+      closeModal={() => setItemToEdit(null)}
+    />
+  )}
 
+  <ToastContainer>{toast}</ToastContainer>
+</div>
 
-
-  </div>
   
 
 )

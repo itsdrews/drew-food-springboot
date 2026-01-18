@@ -12,7 +12,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin(
+    origins = "http://localhost:5173",
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.PATCH,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+    }
+)
 @RestController
 @RequestMapping("/food")
 public class FoodController {
@@ -25,8 +36,9 @@ public class FoodController {
         Food newFood = new Food(data);
         foodRepository.save(newFood);
         return;
-
+        
     }
+    
     @CrossOrigin(origins = "*",allowedHeaders = "*")
     @GetMapping
     public List<FoodResponseDTO> getAll(){
